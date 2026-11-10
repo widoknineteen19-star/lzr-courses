@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('lzr_user');
+      const raw = localStorage.getItem('lms_user');
       if (raw) setUser(JSON.parse(raw));
     } catch {
       /* ignore */
@@ -21,20 +21,20 @@ export function AuthProvider({ children }) {
     const name = email.split('@')[0];
     const role = email.toLowerCase().includes('admin') ? 'admin' : 'user';
     const userData = { email, name, role };
-    localStorage.setItem('lzr_user', JSON.stringify(userData));
+    localStorage.setItem('lms_user', JSON.stringify(userData));
     setUser(userData);
     return userData;
   };
 
   const register = (name, username, password) => {
     const userData = { name, username, role: 'user' };
-    localStorage.setItem('lzr_user', JSON.stringify(userData));
+    localStorage.setItem('lms_user', JSON.stringify(userData));
     setUser(userData);
     return userData;
   };
 
   const logout = () => {
-    localStorage.removeItem('lzr_user');
+    localStorage.removeItem('lms_user');
     setUser(null);
   };
 

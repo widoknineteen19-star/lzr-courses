@@ -4,8 +4,8 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <div className="logo-icon">LZ</div>
-        <span>LZR</span>
+        <div className="logo-icon">LM</div>
+        <span>LMS</span>
       </div>
       <nav className="sidebar-nav">
         <NavLink

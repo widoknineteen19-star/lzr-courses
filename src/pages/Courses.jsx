@@ -12,7 +12,7 @@ export default function Courses() {
   const [form, setForm] = useState({ title: '', desc: '', video: '' });
 
   useEffect(() => {
-    const saved = localStorage.getItem('lzr_courses');
+    const saved = localStorage.getItem('lms_courses');
     let list = saved ? JSON.parse(saved) : null;
 
     if (list && Array.isArray(list) && list.length > 0) {
@@ -24,17 +24,17 @@ export default function Courses() {
         }
         return { ...c, video: c.video || '' };
       });
-      localStorage.setItem('lzr_courses', JSON.stringify(list));
+      localStorage.setItem('lms_courses', JSON.stringify(list));
     } else {
       list = defaultCourses;
-      localStorage.setItem('lzr_courses', JSON.stringify(list));
+      localStorage.setItem('lms_courses', JSON.stringify(list));
     }
     setCourses(list);
   }, []);
 
   const saveToStorage = (list) => {
     setCourses(list);
-    localStorage.setItem('lzr_courses', JSON.stringify(list));
+    localStorage.setItem('lms_courses', JSON.stringify(list));
   };
 
   const openModal = (course = null) => {

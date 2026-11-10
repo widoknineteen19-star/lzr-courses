@@ -23,7 +23,7 @@ export default function CourseDetail() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('lzr_courses');
+    const saved = localStorage.getItem('lms_courses');
     let list = saved ? JSON.parse(saved) : null;
 
     if (list && Array.isArray(list)) {
@@ -148,7 +148,7 @@ export default function CourseDetail() {
               }}
             />
             <div>
-              <strong>Instructor LZR</strong>
+              <strong>Instructor LMS</strong>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                 Senior Web Developer
               </div>

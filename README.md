@@ -1,4 +1,4 @@
-# LZR Courses – React JS
+# LMS Courses – React JS
 
 Website e-learning dengan **React + Vite + React Router** sesuai desain UI/UX dark theme + yellow accent.
 
@@ -17,7 +17,7 @@ Website e-learning dengan **React + Vite + React Router** sesuai desain UI/UX da
 ## Cara Menjalankan
 
 ```bash
-cd lzr-courses-react
+cd lms-courses-react
 npm install
 npm run dev
 ```

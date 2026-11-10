@@ -26,7 +26,7 @@ export default function Layout() {
         <main className="page-content">
           <Outlet />
         </main>
-        <footer className="page-footer">copyright © 2025 LZR Courses</footer>
+        <footer className="page-footer">copyright © 2025 LMS Courses</footer>
       </div>
     </div>
   );
