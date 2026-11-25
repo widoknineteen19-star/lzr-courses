@@ -3,38 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { defaultCourses } from '../data/courses';
 
-function GridIcon() {
-  return (
-    <div className="grid-icon" aria-hidden="true">
-      {Array.from({ length: 9 }, (_, i) => (
-        <span key={i} />
-      ))}
-    </div>
-  );
-}
-
-function TrashIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v9h-2V9zm4 0h2v9h-2V9zM7 9h2v9H7V9z"
-      />
-    </svg>
-  );
-}
-
-function PencilIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-      />
-    </svg>
-  );
-}
-
 export default function Courses() {
   const { isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -44,7 +12,7 @@ export default function Courses() {
   const [form, setForm] = useState({ title: '', desc: '', video: '' });
 
   useEffect(() => {
-    const saved = localStorage.getItem('lms_courses');
+    const saved = localStorage.getItem('lzr_courses');
     let list = saved ? JSON.parse(saved) : null;
 
     if (list && Array.isArray(list) && list.length > 0) {
@@ -56,17 +24,17 @@ export default function Courses() {
         }
         return { ...c, video: c.video || '' };
       });
-      localStorage.setItem('lms_courses', JSON.stringify(list));
+      localStorage.setItem('lzr_courses', JSON.stringify(list));
     } else {
       list = defaultCourses;
-      localStorage.setItem('lms_courses', JSON.stringify(list));
+      localStorage.setItem('lzr_courses', JSON.stringify(list));
     }
     setCourses(list);
   }, []);
 
   const saveToStorage = (list) => {
     setCourses(list);
-    localStorage.setItem('lms_courses', JSON.stringify(list));
+    localStorage.setItem('lzr_courses', JSON.stringify(list));
   };
 
   const openModal = (course = null) => {
@@ -129,38 +97,42 @@ export default function Courses() {
         {courses.map((c) => (
           <div
             key={c.id}
-            className="course-card"
+            className={`course-card ${isAdmin ? 'admin' : ''}`}
             onClick={() => navigate(`/courses/${c.id}`)}
           >
             <div className="course-thumb">
-              <GridIcon />
+              <span className="lang-badge">
+                {c.title.substring(0, 4).toUpperCase()}
+              </span>
             </div>
-            <div className="course-footer">
-              <div className="course-footer-text">
-                <h3>{c.title}</h3>
-                <p>{c.desc}</p>
+            <div className="course-body">
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
+              <div className="course-meta">
+                <span>{c.lessons || 10} Lessons</span>
+                <span>{c.video ? '▶ Video' : 'Beginner'}</span>
               </div>
-              {isAdmin && (
+              {isAdmin ? (
                 <div
-                  className="course-icon-actions"
+                  className="course-actions"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
-                    type="button"
-                    className="icon-btn"
-                    aria-label={`Hapus ${c.title}`}
-                    onClick={() => handleDelete(c.id)}
-                  >
-                    <TrashIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className="icon-btn"
-                    aria-label={`Edit ${c.title}`}
+                    className="btn-sm btn-yellow"
                     onClick={() => openModal(c)}
                   >
-                    <PencilIcon />
+                    Edit
                   </button>
+                  <button
+                    className="btn-sm btn-danger"
+                    onClick={() => handleDelete(c.id)}
+                  >
+                    Hapus
+                  </button>
+                </div>
+              ) : (
+                <div className="course-actions">
+                  <button className="btn-sm btn-yellow">Mulai Belajar</button>
                 </div>
               )}
             </div>

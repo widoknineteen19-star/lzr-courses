@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { defaultCourses, sampleLessons } from '../data/courses';
 
 function getYoutubeId(url) {
@@ -18,12 +18,13 @@ function getYoutubeId(url) {
 
 export default function CourseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [course, setCourse] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const videoRef = useRef(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem('lms_courses');
+    const saved = localStorage.getItem('lzr_courses');
     let list = saved ? JSON.parse(saved) : null;
 
     if (list && Array.isArray(list)) {
@@ -148,7 +149,7 @@ export default function CourseDetail() {
               }}
             />
             <div>
-              <strong>Instructor LMS</strong>
+              <strong>Instructor LZR</strong>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
                 Senior Web Developer
               </div>
@@ -186,14 +187,18 @@ export default function CourseDetail() {
             >
               ← Sebelumnya
             </button>
-            <button
-              className="btn btn-primary"
-              onClick={goNext}
-              disabled={activeIndex >= lessons.length - 1}
-              style={{ opacity: activeIndex >= lessons.length - 1 ? 0.4 : 1 }}
-            >
-              Lanjut Belajar →
-            </button>
+            {activeIndex < lessons.length - 1 ? (
+              <button className="btn btn-primary" onClick={goNext}>
+                Lanjut Belajar →
+              </button>
+            ) : (
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate(`/courses/${course.id}/exam`)}
+              >
+                Selesai · Mulai Exam →
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -226,6 +231,46 @@ export default function CourseDetail() {
           </div>
         ))}
       </div>
+
+      {/* CTA Exam */}
+      <div
+        style={{
+          marginTop: 28,
+          background: 'var(--bg-card)',
+          border: '1px solid var(--yellow)',
+          borderRadius: 14,
+          padding: 24,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 16,
+        }}
+      >
+        <div>
+          <h3 style={{ color: 'var(--yellow)', marginBottom: 6, fontSize: '1.05rem' }}>
+            Siap uji pemahaman?
+          </h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>
+            Setelah membaca materi, kerjakan exam singkat. Hasil skor akan ditampilkan di akhir.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/courses/${course.id}/exam`)}
+          >
+            Mulai Exam
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => navigate(`/courses/${course.id}/exam/result`)}
+          >
+            Lihat Hasil Terakhir
+          </button>
+        </div>
+      </div>
+
     </>
   );
 }

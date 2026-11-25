@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
+import Exam from './pages/Exam';
+import ExamResult from './pages/ExamResult';
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/courses" element={<Courses />} />
             <Route path="/courses/:id" element={<CourseDetail />} />
+            <Route path="/courses/:id/exam" element={<Exam />} />
+            <Route path="/courses/:id/exam/result" element={<ExamResult />} />
           </Route>
         </Routes>
       </BrowserRouter>
