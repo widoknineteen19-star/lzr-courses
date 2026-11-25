@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { defaultCourses } from '../data/courses';
 
 export default function Courses() {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,7 +16,6 @@ export default function Courses() {
     let list = saved ? JSON.parse(saved) : null;
 
     if (list && Array.isArray(list) && list.length > 0) {
-      // Merge video from defaults if missing in old localStorage
       list = list.map((c) => {
         const def = defaultCourses.find((d) => d.id === c.id);
         if (def && !c.video && def.video) {
@@ -82,6 +81,8 @@ export default function Courses() {
     }
   };
 
+  const adminLabel = user?.name || user?.username || 'Admin';
+
   return (
     <>
       <div className="page-header">
@@ -97,43 +98,80 @@ export default function Courses() {
         {courses.map((c) => (
           <div
             key={c.id}
-            className={`course-card ${isAdmin ? 'admin' : ''}`}
+            className="course-card-v2"
             onClick={() => navigate(`/courses/${c.id}`)}
           >
-            <div className="course-thumb">
-              <span className="lang-badge">
-                {c.title.substring(0, 4).toUpperCase()}
-              </span>
+            {/* Thumbnail biru + icon grid seperti desain */}
+            <div className="course-thumb-v2">
+              <div className="course-window-icon">
+                <span /><span /><span />
+                <span /><span /><span />
+                <span /><span /><span />
+              </div>
             </div>
-            <div className="course-body">
-              <h3>{c.title}</h3>
-              <p>{c.desc}</p>
-              <div className="course-meta">
+
+            {/* Body: judul + deskripsi singkat + meta + aksi */}
+            <div className="course-footer-v2">
+              <div className="course-footer-top">
+                <div className="course-footer-text">
+                  <div className="course-title-v2">{c.title}</div>
+                  {isAdmin && (
+                    <div className="course-sub-v2">{adminLabel}</div>
+                  )}
+                </div>
+                {isAdmin && (
+                  <div
+                    className="course-icons-v2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      type="button"
+                      className="icon-btn-v2"
+                      title="Hapus"
+                      onClick={() => handleDelete(c.id)}
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      className="icon-btn-v2"
+                      title="Edit"
+                      onClick={() => openModal(c)}
+                    >
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <p className="course-desc-v2">
+                {c.desc
+                  ? c.desc.length > 90
+                    ? c.desc.slice(0, 90) + '...'
+                    : c.desc
+                  : 'Belum ada deskripsi.'}
+              </p>
+
+              <div className="course-meta-v2">
                 <span>{c.lessons || 10} Lessons</span>
                 <span>{c.video ? '▶ Video' : 'Beginner'}</span>
               </div>
-              {isAdmin ? (
-                <div
-                  className="course-actions"
-                  onClick={(e) => e.stopPropagation()}
+
+              {!isAdmin && (
+                <button
+                  type="button"
+                  className="btn-mulai-v2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/courses/${c.id}`);
+                  }}
                 >
-                  <button
-                    className="btn-sm btn-yellow"
-                    onClick={() => openModal(c)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-sm btn-danger"
-                    onClick={() => handleDelete(c.id)}
-                  >
-                    Hapus
-                  </button>
-                </div>
-              ) : (
-                <div className="course-actions">
-                  <button className="btn-sm btn-yellow">Mulai Belajar</button>
-                </div>
+                  Mulai Belajar
+                </button>
               )}
             </div>
           </div>
@@ -173,7 +211,7 @@ export default function Courses() {
                 placeholder="https://www.youtube.com/watch?v=XXXX atau https://youtu.be/XXXX"
               />
               <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                Paste link YouTube di sini, lalu Simpan. Video akan muncul di halaman detail.
+                Paste link YouTube di sini, lalu Simpan.
               </small>
             </div>
             <div className="modal-actions">
