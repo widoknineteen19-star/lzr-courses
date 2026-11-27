@@ -12,7 +12,7 @@ export default function Exam() {
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const saved = localStorage.getItem('lzr_courses');
+    const saved = localStorage.getItem('lms_courses');
     const list = saved ? JSON.parse(saved) : defaultCourses;
     const found = list.find((c) => c.id === Number(id)) || defaultCourses[0];
     setCourse(found);
@@ -68,13 +68,13 @@ export default function Exam() {
     };
 
     // Simpan hasil (history per user)
-    const key = 'lzr_exam_results';
+    const key = 'lms_exam_results';
     const prev = JSON.parse(localStorage.getItem(key) || '[]');
     prev.unshift(result);
     localStorage.setItem(key, JSON.stringify(prev.slice(0, 50))); // max 50
 
     // Simpan hasil terakhir per course
-    localStorage.setItem(`lzr_exam_last_${course.id}`, JSON.stringify(result));
+    localStorage.setItem(`lms_exam_last_${course.id}`, JSON.stringify(result));
 
     navigate(`/courses/${course.id}/exam/result`, { state: { result } });
   };

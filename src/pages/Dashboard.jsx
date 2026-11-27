@@ -68,7 +68,7 @@ export default function Dashboard() {
         <p>
           {isAdmin
             ? 'Selamat datang di panel Admin. Kelola courses, lihat statistik, dan pantau aktivitas siswa di sini.'
-            : 'Lanjutkan perjalanan belajarmu. Pilih course yang ingin kamu ikuti di menu Courses. Tingkatkan skill coding-mu bersama LZR Courses.'}
+            : 'Lanjutkan perjalanan belajarmu. Pilih course yang ingin kamu ikuti di menu Courses. Tingkatkan skill coding-mu bersama LMS Courses.'}
         </p>
       </div>
     </>

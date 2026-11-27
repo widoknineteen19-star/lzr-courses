@@ -10,7 +10,7 @@ export default function ExamResult() {
 
   useEffect(() => {
     if (!result) {
-      const saved = localStorage.getItem(`lzr_exam_last_${id}`);
+      const saved = localStorage.getItem(`lms_exam_last_${id}`);
       if (saved) {
         setResult(JSON.parse(saved));
       }
